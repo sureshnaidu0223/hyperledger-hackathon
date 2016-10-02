@@ -99,7 +99,11 @@ func (t *SimpleChaincode) Init(stub shim.ChaincodeStubInterface, function string
 	// Table creation
 
 	err = stub.CreateTable("Transaction", []*shim.ColumnDefinition{
-	&shim.ColumnDefinition{Name: "Name", Type: shim.ColumnDefinition_STRING, Key: true},
+	&shim.ColumnDefinition{Name: "PaymentId", Type: shim.ColumnDefinition_STRING, Key: true},
+	&shim.ColumnDefinition{Name: "sdate", Type: shim.ColumnDefinition_STRING, Key: false},
+	&shim.ColumnDefinition{Name: "PointOfPayment", Type: shim.ColumnDefinition_STRING, Key: false},
+	&shim.ColumnDefinition{Name: "Type", Type: shim.ColumnDefinition_STRING, Key: false},
+	&shim.ColumnDefinition{Name: "Account", Type: shim.ColumnDefinition_STRING, Key: false},
 	&shim.ColumnDefinition{Name: "Amount", Type: shim.ColumnDefinition_STRING, Key: false},
 	})
 	
@@ -120,16 +124,6 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	var X int          // Transaction value
 	var err error
 	
-	var Bank1 string
-	var Bal1 string
-	var Bank2 string
-	var Bal2 string
-	Bank1 = "ING"
-	Bank2 = "ABN"
-	Bal1 = "200"
-	Bal2 = "300"
-
-
 	if len(args) != 3 {
 		return nil, errors.New("Incorrect number of arguments. Expecting 3")
 	}
@@ -173,18 +167,98 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface, function stri
 	if err != nil {
 		return nil, err
 	}
-	
-	//Insert Row
-fmt.Println(" inserting row now...........")
+
+	fmt.Println(" inserting row now...........")
+
 	ok, err := stub.InsertRow("Transaction", shim.Row{
 	Columns: []*shim.Column{
-	&shim.Column{Value: &shim.Column_String_{String_: Bank1}},
-	&shim.Column{Value: &shim.Column_String_{String_: Bal1}}},
+	&shim.Column{Value: &shim.Column_String_{String_: "3421"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ATM-Amstelveen"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ING"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "100.00"}}},
 	})
 	ok, err = stub.InsertRow("Transaction", shim.Row{
 	Columns: []*shim.Column{
-	&shim.Column{Value: &shim.Column_String_{String_: Bank2}},
-	&shim.Column{Value: &shim.Column_String_{String_: Bal2}}},
+	&shim.Column{Value: &shim.Column_String_{String_: "3421"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ATM-Amstelveen"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ING"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "100.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3421"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ATM-Amstelveen"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ING"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "100.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3422"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ATM-Bijlmer"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ING"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "50.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3423"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Internet Banking"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Credit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ING"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "20.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3424"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Internet Banking"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ING"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "10.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3425"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ATM-Amstelveen"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ABN-AMRO"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "10.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3426"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "POS-Jumbo-Amstelveen"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ABN-AMRO"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "20.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3427"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Internet Banking"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ABN-AMRO"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "10.00"}}},
+	})
+	ok, err = stub.InsertRow("Transaction", shim.Row{
+	Columns: []*shim.Column{
+	&shim.Column{Value: &shim.Column_String_{String_: "3428"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "01-10-2016"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "POS-Jumbo-Amstelveen"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "Debit"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "ABN-AMRO"}},
+	&shim.Column{Value: &shim.Column_String_{String_: "20.00"}}},
 	})
 
 	if !ok && err == nil {
@@ -216,9 +290,9 @@ func (t *SimpleChaincode) Query(stub shim.ChaincodeStubInterface, function strin
 	if function != "query" {
 		return nil, errors.New("Invalid query function name. Expecting \"query\"")
 	}
+	fmt.Printf("args[0]")
 	var A string // Entities
-var Bank1 string
-Bank1 = args[1]
+	fmt.Printf(args[1])
 	var err error
 
 	if len(args) != 2 {
@@ -242,23 +316,6 @@ Bank1 = args[1]
 	jsonResp := "{\"Name\":\"" + A + "\",\"Amount\":\"" + string(Avalbytes) + "\"}"
 	fmt.Printf("Query Response:%s\n", jsonResp)
 
-
-	Bvalbytes, err1 := stub.GetState(Bank1)
-
-
-	if err1 != nil {
-		jsonResp1 := "{\"Error\":\"Failed to get state for " + Bank1 + "\"}"
-		return nil, errors.New(jsonResp1)
-	}
-
-	if Bvalbytes == nil {
-		jsonResp1 := "{\"Error\":\"Nil amount for " + Bank1 + "\"}"
-		return nil, errors.New(jsonResp1)
-	}
-jsonResp1 := "{\"Name\":\"" + Bank1 + "\",\"Amount\":\"" + string(Bvalbytes) + "\"}"
-fmt.Printf("Our Query Response11--------------------------------->:%s\n", jsonResp1)
-			
-
 	//Fetch Data
 	var columns []shim.Column
 	
@@ -270,6 +327,7 @@ fmt.Printf("Our Query Response11--------------------------------->:%s\n", jsonRe
 	if rowChannel == nil {
 	fmt.Printf("rowchannel is null........")
 	}
+
 	opa_data1 := "[";
 	var rows []shim.Row
 		for {
@@ -279,13 +337,21 @@ fmt.Printf("Our Query Response11--------------------------------->:%s\n", jsonRe
 						rowChannel = nil
 					} else {
 						rows = append(rows, row)
-						name := row.Columns[0].GetString_()
-						balance := row.Columns[1].GetString_()	
 
-					opa_data := "{\"name\":   \"" + name + "\"," +
-			                "\"balance\": \"" + balance + "\"},"
-					opa_data1 = opa_data1+opa_data
+					opa_data := "{\"PaymentId\":   \"" +row.Columns[0].GetString_()  + "\"," +
+						     "\"sdate\":   \"" +row.Columns[1].GetString_()  + "\"," +
+						     "\"PointOfPayment\":   \"" +row.Columns[2].GetString_()  + "\"," +
+						     "\"Type\":   \"" +row.Columns[3].GetString_()  + "\"," +
+						     "\"Account\":   \"" +row.Columns[4].GetString_()  + "\"," +
+			               		     "\"Amount\": \"" + row.Columns[5].GetString_() + "\"},"
+
+						if row.Columns[4].GetString_()== args[1] {
+						opa_data1 = opa_data1+opa_data
 					}
+					if "ALL"== args[1] {
+						opa_data1 = opa_data1+opa_data
+					}
+	  			   }
 				
 				}
 			if rowChannel == nil {
